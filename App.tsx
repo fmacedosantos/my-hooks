@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, Button, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   const [quantity, setQuantity] = useState<number>(1)
   const [price, setPrice] = useState<number>(10.9)
   const basePrice = 10.9
+
+  useEffect(() => {
+    Alert.alert("O valor foi alterado!", `Agora o preço é ${price}.`)
+  }, [price])
 
   const addNumber = () => {
     setQuantity((prevQuantity) => {
