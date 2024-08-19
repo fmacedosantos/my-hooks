@@ -1,40 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useState } from 'react';
-import { Alert, Button, StyleSheet, Text, View } from 'react-native';
+import { useRef } from 'react';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
-  const [quantity, setQuantity] = useState<number>(1)
-  const [price, setPrice] = useState<number>(10.9)
-  const basePrice = 10.9
+  const textInputRef = useRef<TextInput>(null)
 
-  useEffect(() => {
-    Alert.alert("O valor foi alterado!", `Agora o preço é ${price}.`)
-  }, [price])
-
-  const addNumber = () => {
-    setQuantity((prevQuantity) => {
-      const newQuantity = prevQuantity + 1
-      setPrice(basePrice * newQuantity)
-      return newQuantity
-    })
-  }
-
-  const removeNumber = () => {
-    setQuantity((prevQuantity) => {
-      const newQuantity = prevQuantity - 1
-      setPrice(basePrice * newQuantity)
-      return newQuantity
-    })
+  const resetButton = () => {
+    if(textInputRef.current){
+      textInputRef.current.setNativeProps({
+        text: ""
+      })
+    }
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonRow}>
-        <Button title='-' onPress={removeNumber}/>
-        <Text style={styles.textLabel}>{quantity}</Text>
-        <Button title='+' onPress={addNumber}/>
-      </View>
-      <Text>R${price}</Text>
+      <TextInput style={styles.input} ref={textInputRef}/>
+      <Button title='RESETAR' onPress={resetButton}/>
       <StatusBar style="auto" />
     </View>
   );
@@ -47,11 +29,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  textLabel: {
-    fontSize: 22,
-    marginHorizontal: 10,
-  },
-  buttonRow: {
-    flexDirection: 'row',
+  input: {
+    height: 40,
+    width: '80%',
+    padding: 10,
+    borderWidth: 2,
+    borderColor: 'grey',
+    marginBottom: 10,
   },
 });
